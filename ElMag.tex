@@ -1,6 +1,7 @@
 % !TeX program = xelatex
 % !TeX encoding = utf8
 % !TeX root = ElMag.tex
+% vim: sw=2 ts=2 et:
 
 %% TODO: publish to CTAN
 \documentclass[margin=normal]{tex/hsrzf}
@@ -23,6 +24,9 @@
     lang={english},
 ]{doclicense}
 
+%% Theorems
+\usepackage{amsthm}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Metadata
 
@@ -35,6 +39,28 @@
 
 \title{\texttt{\themodule} Zusammenfassung}
 \date{\thesemester}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macros and settings
+
+%% Theorems
+\newtheoremstyle{elmagzf} % name of the style to be used
+  {\topsep}
+  {\topsep}
+  {}
+  {0pt}
+  {\bfseries}
+  {.}
+  { }
+  { }
+
+\theoremstyle{elmagzf}
+\newtheorem{theorem}{Theorem}
+\newtheorem{method}{Method}
+\newtheorem{application}{Application}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{note}{Note}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Document
@@ -56,7 +82,240 @@
 
 % actual content
 \clearpage
+\twocolumn
 \setcounter{page}{1}
 \pagenumbering{arabic}
+
+\section{Vector Analysis Recap}
+
+\begin{definition}[Gradient vector]
+  The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
+  column vector containing the partial derivatives
+  in each direction.
+  \[
+    \grad f (\vec{x}) = \sum_{i=1}^m \partial_{x_i} f(\vec{x}) \vec{e}_i
+      = \begin{pmatrix}
+        \partial_{x_1} f(\vec{x}) \\
+        \vdots \\
+        \partial_{x_m} f(\vec{x}) \\
+      \end{pmatrix}
+  \]
+\end{definition}
+
+\begin{theorem}[Gradient in curvilinear coordinates]
+  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a scalar field. In cylindrical coordinates \((r,\phi,z)\)
+  \[
+    \grad f = \uvec{r}\,\partial_r f 
+      + \uvec{\phi}\,\frac{1}{r}\partial_\phi f
+      + \uvec{z}\,\partial_z f,
+  \]
+  and in spherical coordinates \((r,\theta,\phi)\)
+  \[
+    \grad f = \uvec{r}\,\partial_r f
+      + \uvec{\theta}\,\frac{1}{r} \partial_\theta f
+      + \uvec{\phi}\,\frac{1}{r \sin\theta} \partial_\phi f.
+  \]
+\end{theorem}
+
+\begin{definition}[Divergence]
+  Let \(\vec{F}: \mathbb{R}^m \to \mathbb{R}^m\) be a vector field.
+  The divergence of \(\vec{F} = (F_{x_1},\ldots, F_{x_m})^t\) is
+  \[
+    \div\vec{F} = \sum_{i = 1}^m \partial_{x_i} F_{x_i} ,
+  \]
+  as suggested by the (ab)use of the dot product notation.
+\end{definition}
+
+\begin{theorem}[Divergence in curvilinear coordinates]
+  Let \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\) be a field. In cylindrical coordinates \((r,\phi,z)\)
+  \[
+    \div \vec{F} = \frac{1}{r} \partial_r (r F_r)
+      + \frac{1}{r}\partial_\phi F_\phi
+      + \partial_z F_z,
+  \]
+  and in spherical coordinates \((r,\theta,\phi)\)
+  \begin{align*}
+    \div \vec{F} = \frac{1}{r^2} \partial_r (r^2 F_r)
+      & + \frac{1}{r \sin\theta} \partial_\theta (\sin\theta F_\theta) \\
+      & + \frac{1}{r \sin\theta} \partial_\phi F_\phi
+  \end{align*}
+\end{theorem}
+
+\begin{theorem}[Divergence theorem, Gauss's theorem]
+  Because the flux on the boundary \(\partial V\) of a volume \(V\) contains
+  information of the field inside of \(V\), it is possible relate the two with
+  \[
+    \int_V \div \vec{F} \,dv = \oint_{\partial V} \vec{F} \dotp d\vec{s} .
+  \]
+\end{theorem}
+
+\begin{definition}[Curl]
+  Let \(\vec{F}\) be a vector field. In 2 dimensions
+  \[
+    \curl \vec{F} = \left(\partial_x F_y - \partial_y F_x\right)\uvec{z}.
+  \]
+  And in 3D
+  \[
+    \curl \vec{F} = \begin{pmatrix}
+      \partial_y F_z - \partial_z F_y \\
+      \partial_z F_x - \partial_x F_z \\
+      \partial_x F_y - \partial_y F_x
+    \end{pmatrix}
+    = \begin{vmatrix}
+      \uvec{x} & \uvec{y} & \uvec{z} \\
+      \partial_x & \partial_y & \partial_z \\
+      F_x & F_y & F_z
+    \end{vmatrix} .
+  \]
+\end{definition}
+
+\begin{definition}[Curl in curvilinear coordinates]
+  Let \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\) be a field. In cylindrical coordinates \((r,\phi,z)\)
+  \begin{align*}
+    \curl \vec{F} =
+      &\left(\frac{1}{r} \partial_\phi F_z - \partial_z F_\phi \right) \uvec{r} \\
+      &+ \left(\partial_z F_r - \partial_r F_z \right) \uvec{\phi} \\
+      &+ \frac{1}{r} \bigg[
+        \partial_r (rF_\phi) - \partial_\phi F_r
+        \bigg] \uvec{z},
+  \end{align*}
+  and in spherical coordinates \((r,\theta,\phi)\)
+  \begin{align*}
+      \curl \vec{F} =
+        &\frac{1}{r \sin\theta} \bigg[
+          \partial_\theta (\sin\theta F_\phi) - \partial_\phi F_\theta
+        \bigg] \uvec{r} \\
+        &+ \frac{1}{r} \bigg[
+          \frac{1}{\sin\theta} \partial_\phi F_r - \partial_r (r F_\phi)
+        \bigg] \uvec{\theta} \\
+        &+ \frac{1}{r} \bigg[
+          \partial_r (r F_\theta) - \partial_\theta F_r
+        \bigg] \uvec{\phi} .
+  \end{align*}
+\end{definition}
+
+\begin{theorem}[Stokes' theorem]
+  \[
+    \int_\mathcal{S} \curl \vec{F} \dotp d\vec{s}
+    = \oint_{\partial\mathcal{S}} \vec{F} \dotp d\vec{r}
+  \]
+\end{theorem}
+
+\begin{definition}[Laplacian operator]
+  A second vector derivative is so important that it has a special name.  For a
+  scalar function \(f: \mathbb{R}^m \to \mathbb{R}\) the divergence of the
+  gradient
+  \[
+    \laplacian f = \div (\grad f) = \sum_{i=1}^m \partial_{x_i}^2 f_{x_i}
+  \]
+  is called the \emph{Laplacian operator}.
+\end{definition}
+
+\begin{theorem}[Laplacian in curvilinear coordinates]
+  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a scalar field. In cylindrical coordinates \((r,\phi,z)\)
+  \[
+    \laplacian f = \frac{1}{r} \partial_r (r \partial_r f)
+      + \frac{1}{r^2} \partial_\phi^2 f
+      + \partial_z^2 f
+  \]
+  and in spherical coordinates \((r,\theta,\phi)\)
+  \begin{align*}
+    \laplacian f = 
+      \frac{1}{r^2} \partial_r ( r^2 \partial_r f)
+      & + \frac{1}{r^2\sin\theta} \partial_\theta (\sin\theta \partial_\theta f) \\
+      & + \frac{1}{r^2 \sin^2 \theta} \partial_\phi^2 f.
+  \end{align*}
+\end{theorem}
+
+\begin{definition}[Vector Laplacian]
+  The Laplacian operator can be extended on a vector field \(\vec{F}\) to the 
+  \emph{Laplacian vector} by applying the Laplacian to each component:
+  \[
+    \vlaplacian \vec{F} 
+      = (\laplacian F_x)\uvec{x} 
+      + (\laplacian F_y)\uvec{y} 
+      + (\laplacian F_z)\uvec{z} .
+  \]
+  The vector Laplacian can also be defined as
+  \[
+    \vlaplacian \vec{F} = \grad (\div \vec{F}) - \curl (\curl \vec{F}).
+  \]
+\end{definition}
+
+\begin{theorem}[Product rules and second derivatives]
+  Let \(f,g\) be sufficiently differentiable scalar functions \(D
+  \subseteq\mathbb{R}^m \to \mathbb{R}\) and \(\vec{A}, \vec{B}\) be
+  sufficiently differentiable vector fields in \(\mathbb{R}^m\) (with \(m = 2\)
+  or 3 for equations with the curl).
+  \begin{itemize}
+    \item Rules with the gradient
+      \begin{align*}
+        \grad (\div \vec{A}) &= \curl \curl \vec{A} + \vlaplacian \vec{A} \\
+        \grad (f\cdot g) &= (\grad f)\cdot g + f\cdot \grad g \\
+        \grad (\vec{A} \dotp \vec{B}) &= 
+          (\vec{A} \dotp \grad) \vec{B}
+          + (\vec{B} \dotp \grad) \vec{A} \\
+          & + \vec{A} \crossp (\curl \vec{B})
+          + \vec{B} \crossp (\curl \vec{A})
+      \end{align*}
+    \item Rules with the divergence
+      \begin{align*}
+        \div (\grad f) &= \laplacian f \\
+        \div (\curl \vec{A}) &= 0 \\
+        \div (f\cdot \vec{A}) &= (\grad f) \dotp \vec{A} + f\cdot (\div \vec{A}) \\
+        \div (\vec{A}\crossp\vec{B}) &= (\curl \vec{A})\dotp \vec{B} 
+          - \vec{A} \cdot (\curl\vec{B})
+      \end{align*}
+    \item Rules with the curl
+      \begin{align*}
+        \curl (\grad f) &= \vec{0} \\
+        \curl (\curl \vec{A}) &= \grad (\div \vec{A}) - \vlaplacian \vec{A} \\
+        \curl (\vlaplacian \vec{A}) &= \vlaplacian (\curl \vec{A}) \\
+        \curl (f\cdot \vec{A}) &= (\grad f)\crossp \vec{A} + f\cdot \curl \vec{A} \\
+        \curl (\vec{A}\crossp\vec{B}) &= 
+          (\vec{B} \dotp \grad) \vec{A} - (\vec{A} \dotp \grad) \vec{B} \\
+          &+ \vec{A} \dotp (\div \vec{B}) - \vec{B} \dotp (\div \vec{A})
+      \end{align*}
+  \end{itemize}
+\end{theorem}
+
+\section{Electrodynamics Recap}
+
+\subsection{Maxwell's equations}
+
+Maxwell's equations in matter in their integral form are
+\begin{subequations}
+  \begin{align}
+    \oint_{\partial S} \vec{E} \dotp d\vec{l} &= -\frac{d}{dt} \int_S \vec{B} \dotp d\vec{s}, \\
+    \oint_{\partial S} \vec{H} \dotp d\vec{l} &= \int_S \left(
+      \vec{J} + \partial_t \vec{D}
+    \right) \dotp d\vec{s}, \\
+    \oint_{\partial V} \vec{D} \dotp d\vec{s} &= \int_V \rho \,dv, \\
+    \oint_{\partial V} \vec{B} \dotp d\vec{s} &= 0.
+  \end{align}
+\end{subequations}
+Where \(\vec{J}\) and \(\rho\) are the \emph{free current density} and \emph{free charge density} respectively.
+
+\subsection{Isotropic linear materials and boundary conditions}
+
+Inside of so called isotropic linear materials the fields and flux (or current) densities are proportional, i.e.
+\begin{align*}
+  \vec{D} &= \varepsilon \vec{E}, & \vec{J} &= \sigma \vec{E}, & \vec{B} &= \mu \vec{H}.
+\end{align*}
+
+Between two materials (1) and (2) the following boundary conditions must be satisfied:
+\begin{align*}
+  &\uvec{n} \dotp \vec{D}_1 = \uvec{n} \dotp \vec{D}_2 + \rho_s &
+    &\uvec{n} \crossp \vec{E}_1 = \uvec{n} \crossp \vec{E}_2 \\
+  &\uvec{n} \dotp \vec{J}_1 = \uvec{n} \dotp \vec{J}_2 - \partial_t \rho_s &
+    &\uvec{n} \crossp \vec{H}_1 = \uvec{n} \crossp \vec{H}_2 + \vec{J}_s \\
+  &\uvec{n} \dotp \vec{B}_1 = \uvec{n} \dotp \vec{B}_2 - \partial_t \rho_s &
+    &\uvec{n} \crossp \vec{M}_1 = \uvec{n} \crossp \vec{M}_2 + \vec{J}_{s,m}
+\end{align*}
+
+\subsection{Magnetic vector potential}
+
+\section{Laplace and Poisson's equation}
+
 
 \end{document}
