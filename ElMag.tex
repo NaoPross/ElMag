@@ -88,6 +88,8 @@
 
 \section{Vector Analysis Recap}
 
+\subsection{Partial derivatives}
+
 \begin{definition}[Partial derivative]
   A vector valued function \(f: \mathbb{R}^m\to\mathbb{R}\), with
   \(\vec{v}\in\mathbb{R}^m\), has a partial derivative with respect to \(v_i\)
@@ -116,6 +118,8 @@ To illustrate the previous theorem, in a simpler case with \(f(x,y)\), we get
 \]
 Beware that this is valid only if \(x\) and \(y\) are indipendent.
 If there is a relation \(x(y)\) or \(y(x)\) the above does not hold.
+
+\subsection{Vector derivatives}
 
 \begin{definition}[Gradient vector]
   The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
@@ -228,10 +232,12 @@ If there is a relation \(x(y)\) or \(y(x)\) the above does not hold.
 
 \begin{theorem}[Stokes' theorem]
   \[
-    \int_\mathcal{S} \curl \vec{F} \dotp d\vec{s}
-    = \oint_{\partial\mathcal{S}} \vec{F} \dotp d\vec{r}
+    \int_S \curl \vec{F} \dotp d\vec{s}
+    = \oint_{\partial S} \vec{F} \dotp d\vec{r}
   \]
 \end{theorem}
+
+\subsection{Second vector derivatives}
 
 \begin{definition}[Laplacian operator]
   A second vector derivative is so important that it has a special name.  For a
@@ -330,15 +336,15 @@ Maxwell's equations in matter in their integral form are
 Where \(\vec{J}\) and \(\rho\) are the \emph{free current density} and
 \emph{free charge density} respectively.
 
-\subsection{Isotropic linear materials and boundary conditions}
+\subsection{Linear materials and boundary conditions}
 
-Inside of so called isotropic linear materials the fields and flux (or current)
-densities are proportional, i.e.
+Inside of so called isotropic linear materials fluxes and current
+densities are proportional and parallel to the fields, i.e.
 \begin{align*}
-  \vec{D} &= \varepsilon \vec{E}, & \vec{J} &= \sigma \vec{E}, & \vec{B} &= \mu \vec{H}.
+  \vec{D} &= \epsilon \vec{E}, & \vec{J} &= \sigma \vec{E}, & \vec{B} &= \mu \vec{H}.
 \end{align*}
 
-Between two materials (1) and (2) the following boundary conditions must be satisfied:
+Where two materials meet the following boundary conditions must be satisfied:
 \begin{align*}
   &\uvec{n} \dotp \vec{D}_1 = \uvec{n} \dotp \vec{D}_2 + \rho_s &
     &\uvec{n} \crossp \vec{E}_1 = \uvec{n} \crossp \vec{E}_2 \\
@@ -348,9 +354,57 @@ Between two materials (1) and (2) the following boundary conditions must be sati
     &\uvec{n} \crossp \vec{M}_1 = \uvec{n} \crossp \vec{M}_2 + \vec{J}_{s,m}
 \end{align*}
 
-\subsection{Magnetic vector potential}
+\subsection{Potentials}
 
-\section{Laplace and Poisson's equation}
+Because \(\vec{E}\) is often conservative (\(\curl \vec{E} = \vec{0}\)), and
+\(\div \vec{B}\) is always zero, it is often useful to use \emph{potentials} to
+describe these quantities instead. The electric scalar potential and magnetic
+vector potentials are in their integral form:
+\begin{align*}
+  \varphi &= \int_\mathsf{A}^\mathsf{B} \vec{E} \dotp d\vec{l}, &
+  \vec{A} &= \frac{\mu_0}{4\pi} \int_V \frac{\vec{J} dv}{R}
+\end{align*}
+With differential operators:
+\begin{align*}
+  \vec{E} &= - \grad \varphi, &
+  \mu_0 \vec{J} &= - \vlaplacian \vec{A}.
+\end{align*}
+By taking the divergence on both sides of the equation with the electric field
+we get \(\rho/\epsilon = - \laplacian \varphi\), which also contains the
+Laplacian operator. We will study equations with of form in \S \ref{sec:poisson}.
 
+% \subsection{Energy density}
+
+\section{Laplace and Poisson's equations} \label{sec:poisson}
+
+The so called \emph{Poisson's equation} has the form
+\[
+  \laplacian \varphi = - \frac{\rho}{\epsilon}.
+\]
+When the right side of the equation is zero, it is also known as \emph{Laplace's
+equation}.
+
+\subsection{Easy solutions of Laplace and Poisson's equations}
+
+\subsubsection{Geometry with zenithal and azimuthal symmetries (\"Ubung 2)}
+
+Suppose we have a geometry where, using spherical coordinates, there is a
+symmetry such that the solution does not depend on \(\phi\) or \(\theta\).
+Then Laplace's equation reduces down to
+\[
+  \laplacian \varphi = \frac{1}{r^2} \partial_r ( r^2 \partial_r \varphi) = 0,
+\]
+which has solutions of the form
+\[
+  \varphi(r) = \frac{C_1}{r} + C_2.
+\]
+
+\subsection{Geometry with azimuthal and translational symmetry (\"Ubung 3)}
+
+Suppose that when using cylindrical coordinates, the solution does not depend
+on \(\phi\) or \(z\). Then Laplace's equation becomes
+\[
+  \laplacian A_z = \frac{1}{r} \partial_r (r \partial_r A_z) = 0.
+\]
 
 \end{document}
