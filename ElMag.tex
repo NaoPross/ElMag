@@ -88,6 +88,35 @@
 
 \section{Vector Analysis Recap}
 
+\begin{definition}[Partial derivative]
+  A vector valued function \(f: \mathbb{R}^m\to\mathbb{R}\), with
+  \(\vec{v}\in\mathbb{R}^m\), has a partial derivative with respect to \(v_i\)
+  defined as
+  \[
+    \partial_{v_i} f(\vec{v})
+      % = f_{v_i}(\vec{v})
+      = \frac{\partial f}{\partial v_i}
+      = \lim_{h\to 0} \frac{f(\vec{v} + h\vec{e}_i) - f(\vec{v})}{h}
+  \]
+\end{definition}
+
+\begin{theorem}[Integration of partial derivatives]
+  Let \(f: \mathbb{R}^m\to\mathbb{R}\) be a partially differentiable function
+  of many \(x_i\). When \(x_i\) is \emph{indipendent} with respect to all other
+  \(x_j\) \((0 < j \leq m, j \neq i)\) then
+  \[
+    \int \partial_{x_i} f \,d x_i = f + C,
+  \]
+  where \(C\) is a function of \(x_1, \ldots, x_m\) but not of \(x_i\).
+\end{theorem}
+
+To illustrate the previous theorem, in a simpler case with \(f(x,y)\), we get
+\[
+  \int \partial_x f(x,y) \,dx = f(x, y) + C(y).
+\]
+Beware that this is valid only if \(x\) and \(y\) are indipendent.
+If there is a relation \(x(y)\) or \(y(x)\) the above does not hold.
+
 \begin{definition}[Gradient vector]
   The \emph{gradient} of a function \(f(\vec{x}), \vec{x}\in\mathbb{R}^m\) is a
   column vector containing the partial derivatives
@@ -103,7 +132,8 @@
 \end{definition}
 
 \begin{theorem}[Gradient in curvilinear coordinates]
-  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a scalar field. In cylindrical coordinates \((r,\phi,z)\)
+  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a scalar field. In cylindrical
+  coordinates \((r,\phi,z)\)
   \[
     \grad f = \uvec{r}\,\partial_r f 
       + \uvec{\phi}\,\frac{1}{r}\partial_\phi f
@@ -127,7 +157,8 @@
 \end{definition}
 
 \begin{theorem}[Divergence in curvilinear coordinates]
-  Let \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\) be a field. In cylindrical coordinates \((r,\phi,z)\)
+  Let \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\) be a field. In cylindrical
+  coordinates \((r,\phi,z)\)
   \[
     \div \vec{F} = \frac{1}{r} \partial_r (r F_r)
       + \frac{1}{r}\partial_\phi F_\phi
@@ -170,7 +201,8 @@
 \end{definition}
 
 \begin{definition}[Curl in curvilinear coordinates]
-  Let \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\) be a field. In cylindrical coordinates \((r,\phi,z)\)
+  Let \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\) be a field. In cylindrical
+  coordinates \((r,\phi,z)\)
   \begin{align*}
     \curl \vec{F} =
       &\left(\frac{1}{r} \partial_\phi F_z - \partial_z F_\phi \right) \uvec{r} \\
@@ -212,7 +244,8 @@
 \end{definition}
 
 \begin{theorem}[Laplacian in curvilinear coordinates]
-  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a scalar field. In cylindrical coordinates \((r,\phi,z)\)
+  Let \(f: \mathbb{R}^3 \to \mathbb{R}\) be a scalar field. In cylindrical
+  coordinates \((r,\phi,z)\)
   \[
     \laplacian f = \frac{1}{r} \partial_r (r \partial_r f)
       + \frac{1}{r^2} \partial_\phi^2 f
@@ -294,11 +327,13 @@ Maxwell's equations in matter in their integral form are
     \oint_{\partial V} \vec{B} \dotp d\vec{s} &= 0.
   \end{align}
 \end{subequations}
-Where \(\vec{J}\) and \(\rho\) are the \emph{free current density} and \emph{free charge density} respectively.
+Where \(\vec{J}\) and \(\rho\) are the \emph{free current density} and
+\emph{free charge density} respectively.
 
 \subsection{Isotropic linear materials and boundary conditions}
 
-Inside of so called isotropic linear materials the fields and flux (or current) densities are proportional, i.e.
+Inside of so called isotropic linear materials the fields and flux (or current)
+densities are proportional, i.e.
 \begin{align*}
   \vec{D} &= \varepsilon \vec{E}, & \vec{J} &= \sigma \vec{E}, & \vec{B} &= \mu \vec{H}.
 \end{align*}
