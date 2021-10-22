@@ -98,7 +98,7 @@
     \partial_{v_i} f(\vec{v})
       % = f_{v_i}(\vec{v})
       = \frac{\partial f}{\partial v_i}
-      = \lim_{h\to 0} \frac{f(\vec{v} + h\vec{e}_i) - f(\vec{v})}{h}
+      = \lim_{h\to 0} \frac{f(\vec{v} + h\uvec{e}_i) - f(\vec{v})}{h}
   \]
 \end{definition}
 
@@ -126,7 +126,7 @@ If there is a relation \(x(y)\) or \(y(x)\) the above does not hold.
   column vector containing the partial derivatives
   in each direction.
   \[
-    \grad f (\vec{x}) = \sum_{i=1}^m \partial_{x_i} f(\vec{x}) \vec{e}_i
+    \grad f (\vec{x}) = \sum_{i=1}^m \partial_{x_i} f(\vec{x}) \uvec{e}_i
       = \begin{pmatrix}
         \partial_{x_1} f(\vec{x}) \\
         \vdots \\
@@ -374,6 +374,46 @@ we get \(\rho/\epsilon = - \laplacian \varphi\), which also contains the
 Laplacian operator. We will study equations with of form in \S \ref{sec:poisson}.
 
 % \subsection{Energy density}
+
+\section{Boundary value problems}
+
+\subsection{Steady-state flow analysis}
+The equatation for the steady-state analysis is
+\begin{equation}
+  \laplacian \varphi = 0 \quad\text{for}\quad \vec{r} \in \Omega,
+\end{equation}
+with its boundary conditions:
+\(
+  \varphi = 0 \text{ for } \vec{r}\in\Gamma_e,
+  \varphi = U \text{ for } \vec{r}\in\Gamma_b,
+  \nabla_\uvec{n} \varphi = 0 \text{ for } \vec{r}\in\Gamma_s.
+\)
+
+\subsection{Magnetostatic analysis}
+The equation for the magnetostatic analysis is
+\begin{equation}
+  \vlaplacian \vec{A} = -\mu_0 \vec{J} \quad\text{for}\quad \vec{r} \in \Omega.
+\end{equation}
+
+\subsection{Magnetoquasistatic analysis}
+The equation for the magnetoquasistatic analysis is
+\begin{equation}
+  \vlaplacian \vec{A} - \mu_0 \sigma \partial_t \vec{A}
+    = -\mu_0 \vec{J}_q \quad\text{for}\quad \vec{r} \in \Omega.
+\end{equation}
+
+\subsection{Electrodynamic analysis}
+The equationsfor the electrodynamic analysis are
+\begin{subequations}
+  \begin{gather}
+    \vlaplacian \vec{E}
+      - \mu \sigma \partial_t \vec{E}
+      - \mu \epsilon \partial^2_t \vec{E} = \vec{0}, \\
+    \vlaplacian \vec{H}
+      - \mu \sigma \partial_t \vec{H}
+      - \mu \epsilon \partial^2_t \vec{H} = \vec{0}.
+  \end{gather}
+\end{subequations}
 
 \section{Laplace and Poisson's equations} \label{sec:poisson}
 
