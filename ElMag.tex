@@ -1,10 +1,10 @@
 % !TeX program = xelatex
 % !TeX encoding = utf8
 % !TeX root = ElMag.tex
-% vim: sw=2 ts=2 et:
+% vim: sw=2 ts=2 et tw=80:
 
 %% TODO: publish to CTAN
-\documentclass[margin=normal]{tex/hsrzf}
+\documentclass[margin=small]{tex/hsrzf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages
@@ -341,18 +341,26 @@ Where \(\vec{J}\) and \(\rho\) are the \emph{free current density} and
 Inside of so called isotropic linear materials fluxes and current
 densities are proportional and parallel to the fields, i.e.
 \begin{align*}
-  \vec{D} &= \epsilon \vec{E}, & \vec{J} &= \sigma \vec{E}, & \vec{B} &= \mu \vec{H}.
+  \vec{D} &= \varepsilon \vec{E}, & \vec{J} &= \sigma \vec{E}, & \vec{B} &= \mu \vec{H}.
 \end{align*}
 
-Where two materials meet the following boundary conditions must be satisfied:
-\begin{align*}
-  &\uvec{n} \dotp \vec{D}_1 = \uvec{n} \dotp \vec{D}_2 + \rho_s &
+Where two materials meet the following boundary conditions must be satisfied.
+For the perpendicular component:
+\begin{subequations}
+  \begin{align}
+    &\uvec{n} \dotp \vec{D}_1   = \uvec{n} \dotp \vec{D}_2 + \rho_s \\
+    &\uvec{n} \dotp \vec{J}_1   = \uvec{n} \dotp \vec{J}_2 - \partial_t \rho_s \\
+    &\uvec{n} \dotp \vec{B}_1   = \uvec{n} \dotp \vec{B}_2 - \partial_t \rho_s
+  \end{align}
+\end{subequations}
+and for the tangential component:
+\begin{subequations}
+  \begin{align}
     &\uvec{n} \crossp \vec{E}_1 = \uvec{n} \crossp \vec{E}_2 \\
-  &\uvec{n} \dotp \vec{J}_1 = \uvec{n} \dotp \vec{J}_2 - \partial_t \rho_s &
     &\uvec{n} \crossp \vec{H}_1 = \uvec{n} \crossp \vec{H}_2 + \vec{J}_s \\
-  &\uvec{n} \dotp \vec{B}_1 = \uvec{n} \dotp \vec{B}_2 - \partial_t \rho_s &
     &\uvec{n} \crossp \vec{M}_1 = \uvec{n} \crossp \vec{M}_2 + \vec{J}_{s,m}
-\end{align*}
+  \end{align}
+\end{subequations}
 
 \subsection{Potentials}
 
@@ -362,7 +370,7 @@ describe these quantities instead. The electric scalar potential and magnetic
 vector potentials are in their integral form:
 \begin{align*}
   \varphi &= \int_\mathsf{A}^\mathsf{B} \vec{E} \dotp d\vec{l}, &
-  \vec{A} &= \frac{\mu_0}{4\pi} \int_V \frac{\vec{J} dv}{R}
+  \vec{A} &= \frac{\mu_0}{4\pi} \int_V \frac{\vec{J} dv}{R}.
 \end{align*}
 With differential operators:
 \begin{align*}
@@ -370,15 +378,155 @@ With differential operators:
   \mu_0 \vec{J} &= - \vlaplacian \vec{A}.
 \end{align*}
 By taking the divergence on both sides of the equation with the electric field
-we get \(\rho/\epsilon = - \laplacian \varphi\), which also contains the
-Laplacian operator. We will study equations with of form in \S \ref{sec:poisson}.
+we get \(\rho/\varepsilon = - \laplacian \varphi\), which also contains the
+Laplacian operator. We will study equations with of form in \S
+\ref{sec:poisson}.  Potentials, are continuous quantities from any direction, so
+we have the boundary conditions
+\begin{align*}
+  \varphi_1 &= \varphi_2, &
+  \vec{A}_1 &= \vec{A}_2.
+\end{align*}
+However their derivatives inherit the discontinuity
+\begin{align*}
+  \uvec{n} \dotp \grad \varphi_1 &= \uvec{n} \dotp \grad \varphi_2, &
+  \uvec{n} \dotp \grad \vec{A}_1 &= \uvec{n} \dotp \grad \vec{A}_2.
+\end{align*}
 
 % \subsection{Energy density}
+
+\subsection{Classic problems}
+
+\paragraph{Grounded pole}
+\begin{quote}
+  A pole (mast) is anchored to the ground using a metal half sphere (\(\sigma
+  \to \infty\)) of radius \(a\), that is surrounded by the ground which has a
+  conductivity \(\sigma(r)\). What is the resistance of the ground?
+\end{quote}
+
+We are looking for \(R = U / I\), so we try to find an expression \(U(I)/I\). To
+solve this problem we consider a current \(I\) on the pole towards the ground,
+which creates a current density \(\vec{J}\) on a half sphere \(S\) of
+radius \(r\), that is related to \(I\) by:
+\begin{align*}
+  I = \int_{S} \vec{J} \dotp d\vec{s}
+  &= \int_{S} \sigma(r) \vec{E} \dotp d\vec{s} \\
+  &= \sigma(r) E \int_{S} \, r^2 \sin(\theta) d\theta d\phi.
+\end{align*}
+Because \(\vec{E}\) and \(\sigma(r)\) are constant on the surface (do not depend
+on \(\theta\) or \(\phi\)), we can solve for the electric field to get
+\[
+  \vec{E}(r) = \frac{I \uvec{r}}{2 \pi r^2 \sigma(r)}.
+\]
+With the electric field as a function of \(I\), we can now find the voltage as a
+function of the current:
+\[
+  U(I) = \int_a^\infty \vec{E}(r) \dotp d\vec{r}
+       = \frac{I}{2\pi} \int_a^\infty \frac{dr}{r^2 \sigma(r)},
+\]
+and finally divide by \(I\) to get
+\begin{equation}
+  R = \frac{1}{2\pi} \int_a^\infty \frac{dr}{r^2 \sigma(r)}.
+\end{equation}
+
+\paragraph{Magnetic field around a conductor}
+\begin{quote}
+  Though a conductor of radius \(a\) flows a homogeneous currrent density
+  \(J_0\uvec{z}\). Compute the flux density \(\vec{B}\).
+\end{quote}
+
+We let \(C\) be an Amperian contour, that is a disc of radius \(r\) around the
+axis of the conductor, and then simply use Ampere's law 
+\[
+  \oint_{\partial C} \vec{H} \dotp d\vec{l} = \int_C \vec{J}(r) \dotp d\vec{s}.
+\]
+Because of symmetry, the left side simplifies down to \(2\pi r H\), thus
+\[
+  \vec{H} = \frac{\uvec{\phi}}{2\pi r} \int_C \vec{J}(r) \dotp d\vec{s} =
+    \begin{cases}
+      r J_0 \uvec{\phi}, & r \leq a \\
+      a^2 J_0 \uvec{\phi} / (2r) , & r > a \\
+    \end{cases}
+\]
+and finally \(\vec{B} = \mu \vec{H}\). So the flux density is linear in the
+material, and proportional to \(1/r\) outside.
+
+If we now wish to formulate this as a boundary value problem, we apply Stoke's
+theorem to Ampere's law to get
+\[
+  \int_S \curl \vec{H} \dotp d\vec{s} = \int_S \vec{J} \dotp d\vec{s},
+\]
+then by removing the integrals and multiplying both sides by \(\mu\) we get
+\begin{align*}
+  \mu \vec{J} &= \curl \mu \vec{H} = \curl \curl \vec{A} \\
+    &= \big(
+        \underbrace{\grad ( \div \vec{A} )}_{= 0}
+        - \vlaplacian \vec{A}
+      \big) = -\vlaplacian \vec{A}. \\
+\end{align*}
+We know that in \(\uvec{A} = \uvec{J} = \uvec{z}\), so in cylindrical
+coordinates the vector Laplacian simplifies down to a single dimension
+\begin{equation} \label{eqn:classic-az-ode}
+  \mu J(r) = - \frac{1}{r} \partial_r ( r \partial_r A_z ),
+\end{equation}
+an ODE in \(r\).
+
+The boundary conditions for this problem are: that at the border between the conductor the
+\(A_z\) is continuous, and the derivative \(\partial_r A_z\) is also continuous
+(because \(\vec{B} = \curl \vec{A}\) is continuous), lastly when \(r = 0\) we
+want \(A_z\) to not be infinite, so we set it to zero.  Algebraically, if 1 is
+inside the conductor and 2 outside:
+\begin{subequations}
+  \begin{align}
+    A_{z1} (0) &= 0 , \label{eqn:classic-az-finite} \\
+    A_{z1} (a) &= A_{z2} (a) , \label{eqn:classic-az-cont} \\
+    \partial_r A_{z1} (a) &= \partial_r A_{z2} (a) , \label{eqn:classic-az-bcont}
+  \end{align}
+\end{subequations}
+We shall now solve \eqref{eqn:classic-az-ode}. Because \(J(r) = J_0\) for \(r \leq
+a\) and zero elsewhere this is easy. First we do the outside
+\[
+  0 = -\frac{1}{r} \frac{d}{dr} \left( r \frac{dA_{z2}}{dr} \right)
+  \implies A_{z2} = K_2 + C_2 \ln r,
+\]
+then similarly the inside gives
+\begin{align*}
+  \mu J_0 = & -\frac{1}{r} \frac{d}{dr} \left( r \frac{dA_{z1}}{dr} \right) \\
+  &\implies A_{z1} = K_1 - \frac{\mu J_0 r^2}{4} + C_1 \ln r .
+\end{align*}
+Finally with the boundary conditions we find the values for \(C_1, C_2, K_1,
+K_2\):
+\begin{itemize}
+  \item Because of \eqref{eqn:classic-az-finite} \(C_1 = K_1 = 0\);
+  \item With \eqref{eqn:classic-az-cont} and \eqref{eqn:classic-az-bcont} we get
+    a system of equations
+    \[
+      -\frac{\mu J_0 a^2}{4} = K_2 + C_2 \ln a, \qquad
+      \frac{\mu J_0 a}{2} = \frac{C_2}{a}.
+    \]
+    With the latter we find that \(C_2 = \mu J_0 a^2 / 2\), and thus
+    \(K_2 = -\mu J_0 a^2 (1 - 2\ln a) / 2\)
+\end{itemize}
+The final result is 
+\begin{align*}
+  \vec{A} = \begin{cases}
+    -\mu J_0 r^2 \, \uvec{z} / 2 ,                   & r \leq a \\
+    -\mu J_0 a^2 (1 + 2 \ln (r/a)) \, \uvec{z} / 4 , & r > a.   \\
+  \end{cases}
+\end{align*}
+To get the flux density we use \(\vec{B} = \curl \vec{A}\):
+\[
+  \vec{B} = \uvec{\phi} \partial_r A_z = \begin{cases}
+    -\mu J_0 r \uvec{\phi}, & r \leq a \\
+    -\mu J_0 a^2 \uvec{\phi} / (2r) & r > a .\\
+  \end{cases}
+\]
+
+\paragraph{Infinite plane}
 
 \section{Boundary value problems}
 
 \subsection{Steady-state flow analysis}
-The equatation for the steady-state analysis is
+The equation for the steady-state analysis is
 \begin{equation}
   \laplacian \varphi = 0 \quad\text{for}\quad \vec{r} \in \Omega,
 \end{equation}
@@ -399,8 +547,9 @@ The equation for the magnetostatic analysis is
 The equation for the magnetoquasistatic analysis is
 \begin{equation}
   \vlaplacian \vec{A} - \mu_0 \sigma \partial_t \vec{A}
-    = -\mu_0 \vec{J}_q \quad\text{for}\quad \vec{r} \in \Omega.
+    = -\mu_0 \vec{J}_q \quad\text{for}\quad \vec{r} \in \Omega,
 \end{equation}
+with its boundary conditions \(\uvec{n}\crossp\vec{A} = \vec{0}\) for \(\vec{r}\in\Gamma_i\).
 
 \subsection{Electrodynamic analysis}
 The equationsfor the electrodynamic analysis are
@@ -426,7 +575,7 @@ equation}.
 
 \subsection{Easy solutions of Laplace and Poisson's equations}
 
-\subsubsection{Geometry with zenithal and azimuthal symmetries (\"Ubung 2)}
+\paragraph{Geometry with zenithal and azimuthal symmetries (\"Ubung 2)}
 
 Suppose we have a geometry where, using spherical coordinates, there is a
 symmetry such that the solution does not depend on \(\phi\) or \(\theta\).
@@ -439,12 +588,57 @@ which has solutions of the form
   \varphi(r) = \frac{C_1}{r} + C_2.
 \]
 
-\subsection{Geometry with azimuthal and translational symmetry (\"Ubung 3)}
+\paragraph{Geometry with azimuthal and translational symmetry (\"Ubung 3)}
 
 Suppose that when using cylindrical coordinates, the solution does not depend
 on \(\phi\) or \(z\). Then Laplace's equation becomes
 \[
   \laplacian A_z = \frac{1}{r} \partial_r (r \partial_r A_z) = 0.
 \]
+
+\section{Finite element method}
+
+The finite element method (FEM) is a popular numerical method for solving
+partial differential equations, i.e. a boundary value problem. FEM works by
+discretizing space into a so called \emph{mesh}, and computing the physical
+quantities (fields) only on it. This reduces a continuous problem (of
+inifinitely many infinitely small changes) into a linear system of equations
+that is solved using linear algebra.
+
+\subsection{Electrostatic FEM}
+
+For an electrostatic boundary value problem, we are trying to solve \(\laplacian
+\varphi = 0\) in a domain \(\Omega \subset \mathbb{R}^n\), given a charge
+density distribution \(\rho(\vec{r})\). From physics we know that in nature
+(solution) the energy of the system will be minimzed. So we need the energy,
+which is computed with
+\[
+  W_e = \int_\Omega \rho \, \varphi \, ds.
+\]
+Because \(\rho = \div \vec{D}\), we can rewrite it as
+\begin{align*}
+  W_e &= \int_\Omega (\div \vec{D}) \, \varphi \, ds
+       = \int_\Omega \div (\vec{D} \varphi) - \vec{D} \dotp (\grad \varphi) \, ds \\
+      &= \underbrace{\oint_{\partial \Omega} \vec{D} \varphi \dotp d\vec{s}}_{
+      \text{electrostatics } \therefore \, = 0}
+         + \int_\Omega \vec{D} \dotp (-\grad \varphi) \, ds \\
+      &= \int_\Omega \vec{D} \dotp \vec{E} \, ds
+       = \int_\Omega \varepsilon E^2 \, ds
+       = \int_\Omega \varepsilon (\grad \varphi)^2 \, ds
+\end{align*}
+Now we can write the energy \(W_e\) both using charge density and potentials,
+as well as with fields. We can combine both into a single expression by taking
+half from each:
+\begin{equation}
+  W_e = \frac{1}{2} \int_\Omega \rho \, \varphi \, ds
+        + \frac{1}{2} \int_\Omega \varepsilon (\grad \varphi)^2 \, ds.
+\end{equation}
+This energy must be minimized, so \(\grad W_e = \vec{0}\), but this cannot be
+practically solved, it is necessary to approximate \(\varphi\). Of the domain
+\(\Omega\) only a finite number of points \(M\) is taken, and the rest of omega
+is interpolated using a function \(N(\vec{r})\)
+\begin{equation}
+  \varphi^e = \sum_k N_k \varphi^e
+\end{equation}
 
 \end{document}
