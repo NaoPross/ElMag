@@ -394,7 +394,171 @@ However their derivatives inherit the discontinuity
 
 % \subsection{Energy density}
 
-\subsection{Classic problems}
+\section{Boundary value problems}
+
+\subsection{Steady-state flow analysis}
+The equation for the steady-state analysis is
+\begin{equation}
+  \laplacian \varphi = 0 \quad\text{for}\quad \vec{r} \in \Omega,
+\end{equation}
+with its boundary conditions:
+\(
+  \varphi = 0 \text{ for } \vec{r}\in\Gamma_e,
+  \varphi = U \text{ for } \vec{r}\in\Gamma_b,
+  \nabla_\uvec{n} \varphi = 0 \text{ for } \vec{r}\in\Gamma_s.
+\)
+
+\subsection{Magnetostatic analysis}
+The equation for the magnetostatic analysis is
+\begin{equation}
+  \vlaplacian \vec{A} = -\mu_0 \vec{J} \quad\text{for}\quad \vec{r} \in \Omega.
+\end{equation}
+
+\subsection{Magnetoquasistatic analysis}
+The equation for the magnetoquasistatic analysis is
+\begin{equation}
+  \vlaplacian \vec{A} - \mu_0 \sigma \partial_t \vec{A}
+    = -\mu_0 \vec{J}_q \quad\text{for}\quad \vec{r} \in \Omega,
+\end{equation}
+with its boundary conditions \(\uvec{n}\crossp\vec{A} = \vec{0}\) for \(\vec{r}\in\Gamma_i\).
+
+\subsection{Electrodynamic analysis}
+The equations for the electrodynamic analysis are
+\begin{subequations}
+  \begin{gather}
+    \vlaplacian \vec{E}
+      - \mu \sigma \partial_t \vec{E}
+      - \mu \varepsilon \partial^2_t \vec{E} = \vec{0},
+      \label{eqn:wave-equation-e} \\
+    \vlaplacian \vec{H}
+      - \mu \sigma \partial_t \vec{H}
+      - \mu \varepsilon \partial^2_t \vec{H} = \vec{0}.
+      \label{eqn:wave-equation-h}
+  \end{gather}
+\end{subequations}
+
+\section{Laplace and Poisson's equations} \label{sec:poisson}
+
+The so called \emph{Poisson's equation} has the form
+\[
+  \laplacian \varphi = - \frac{\rho}{\epsilon}.
+\]
+When the right side of the equation is zero, it is also known as \emph{Laplace's
+equation}.
+
+\subsection{Easy solutions of Laplace and Poisson's equations}
+
+\paragraph{Geometry with zenithal and azimuthal symmetries (\"Ubung 2)}
+
+Suppose we have a geometry where, using spherical coordinates, there is a
+symmetry such that the solution does not depend on \(\phi\) or \(\theta\).
+Then Laplace's equation reduces down to
+\[
+  \laplacian \varphi = \frac{1}{r^2} \partial_r ( r^2 \partial_r \varphi) = 0,
+\]
+which has solutions of the form
+\[
+  \varphi(r) = \frac{C_1}{r} + C_2.
+\]
+
+\paragraph{Geometry with azimuthal and translational symmetry (\"Ubung 3)}
+
+Suppose that when using cylindrical coordinates, the solution does not depend
+on \(\phi\) or \(z\). Then Laplace's equation becomes
+\[
+  \laplacian A_z = \frac{1}{r} \partial_r (r \partial_r A_z) = 0.
+\]
+
+\section{Solved problems}
+
+\paragraph{Concentric rings}
+\begin{quote}
+  Two concentric rings of conductor (\(\sigma \to \infty\)) have a tall
+  rectangular cross section (ignore boundary effects). The distance from the
+  center to the outer edge of the first ring is \(a\), and the distance to the
+  inner edge of the second is \(b > a\).  In other words, the air gap between
+  the two rings has width \(b - a\).  Both rings are coated with a dielectric
+  (\(\varepsilon_{r1}, \varepsilon_{r3} > 1\)) of thickness \(d\). The inner
+  ring is grounded, while the second has a voltage \(u > 0\).  Compute the
+  electric field \(\vec{E}\) between the rings.
+\end{quote}
+
+To solve this problem we let \(C\) be a cylinder centered on the axis of the
+rings, with radius \(r\) and height \(h\). Because the outer ring has a higher
+potential (\(u > 0\)) we can assume that \(\uvec{E} = -\uvec{r}\). The we use
+Gauss's law:
+\[
+  Q = \oint_C \vec{D} \dotp d\vec{s} 
+    = \oint_C \varepsilon(r) \vec{E} \dotp d\vec{s}
+    = - 2 \pi r h \varepsilon(r) E,
+\]
+where
+\[
+  \varepsilon(r) = \begin{cases}
+    \varepsilon_{r1}\varepsilon_0  & a \leq r < a + d     \\
+    \varepsilon_0                  & a + d \leq r < b - d \\
+    \varepsilon_{r3}\varepsilon_0  & b - d \leq r < b     \\
+  \end{cases}
+\]
+thus
+\[
+  \vec{E} = \frac{-\uvec{z} Q}{2 \pi h r\varepsilon(r)}.
+\]
+The unknown charge \(Q\) can be expressed in terms of the voltage \(u\) since
+\[
+  u = \int_b^a \vec{E} \dotp d\vec{r}
+   = \frac{Q}{2\pi h} \int_a^b \frac{dr}{r\varepsilon(r)}.
+\]
+Therefore
+\[
+  Q = 2\pi h u \left( \int_a^b \frac{dr}{r\varepsilon(r)} \right)^{-1},
+\]
+which when substituted into \(\vec{E}\) gives the solution
+\[
+  \vec{E} = \frac{-u \uvec{z}}{r\varepsilon(r)} \left(
+    \int_a^b \frac{dr}{r\varepsilon(r)}
+  \right)^{-1}.
+\]
+
+We shall now solve again for \(\vec{E} = -\grad \varphi\), but this time using a
+boundary value problem in terms of \(\varphi\). By taking the divergence on both
+sides we get
+\[
+  \div \vec{E} = - \div \grad \varphi \implies
+  \frac{\rho}{\varepsilon} = - \laplacian \varphi,
+\]
+i.e. Poisson's equation. Since between \(a\) and \(b\) the charge density is
+zero and thanks to cylindrical symmetry the problem reduces down to:
+\begin{align}
+  0 = - \laplacian \varphi
+    &= - \frac{1}{r} \partial_r ( r \partial_r \varphi ) \nonumber \\
+  \implies 0 &= \frac{d}{dr} \left( r \frac{d\varphi}{dr} \right).
+  \label{eqn:classic-phi-ode}
+\end{align}
+Before solving \eqref{eqn:classic-phi-ode} we need to define the boundary
+conditions.  First, the voltage is fixed at the electrodes to zero and \(u\).
+Secondly, physically the electric potential must be continuous. Third, the
+derivative must also be continuous because the flux \(\vec{D} = - \varepsilon
+\grad \varphi\) is continuous.  Thus between \(a\) and \(b\) there are 3
+regions: \(\varphi_1\) in the first dielectic, \(\varphi_2\) in the air between
+and \(\varphi_3\) in the second dielectric.  Algebraically:
+\begin{subequations}
+  \begin{align}
+    \varphi_1(a) &= 0, \label{eqn:classic-phi-bound-1z} \\
+    \varphi_3(b) &= u, \label{eqn:classic-phi-bound-3u} \\
+    \varphi_1(a + d) &= \varphi_2(a + d), \\
+    \varphi_2(b - d) &= \varphi_3(b - d), \\
+    \varepsilon_{r1} \partial_r \varphi_1(a + d) &= \partial_r \varphi_2(a + d),
+      \label{eqn:classic-phi-bound-d12} \\
+    \partial_r \varphi_2(b - d) &= \varepsilon_{r3} \partial_r \varphi_3(b - d).
+      \label{eqn:classic-phi-bound-d23}
+  \end{align}
+\end{subequations}
+The ODE \eqref{eqn:classic-phi-ode} has solutions of the form:
+\begin{equation}
+  \varphi_i = K_i + C_i \ln r.
+\end{equation}
+The unknowns can be found by using the boundary conditions.
 
 \paragraph{Grounded pole}
 \begin{quote}
@@ -427,6 +591,34 @@ and finally divide by \(I\) to get
 \begin{equation}
   R = \frac{1}{2\pi} \int_a^\infty \frac{dr}{r^2 \sigma(r)}.
 \end{equation}
+
+Reformulating this problem as a boundary value problem, we look for the
+potential distribution \(\varphi\) to find \(R = U / I(U)\). This problem is
+formulated with the Laplace equation
+\[
+  \laplacian \varphi = \frac{1}{r^2}\partial_r (r^2 \partial_r \varphi) = 0,
+\]
+and the boundary conditions:
+\begin{subequations}
+  \begin{align}
+    \varphi(a) &= U, \\
+    \varphi(r \to \infty) &= 0,
+  \end{align}
+  and the requirements for the derivative \(- \sigma(r) \grad \varphi = \vec{J}\)
+  to be continuous. If we let
+  \[
+    \sigma(r) = \begin{cases}
+      \sigma_1, & a \leq r < b \\
+      \sigma_2, & b \leq r \\
+    \end{cases}
+  \]
+  then we get the boundary condition:
+  \begin{equation}
+    \sigma_1 \partial_r \varphi_1 = \sigma_2 \partial_r \varphi_2,
+  \end{equation}
+  where \(\varphi_1\) is in the first conductor, where the potential at its end
+  equals \(U\), and \(\varphi_2\) is in the second conductor.
+\end{subequations}
 
 \paragraph{Magnetic field around a conductor}
 \begin{quote}
@@ -461,20 +653,18 @@ then by removing the integrals and multiplying both sides by \(\mu\) we get
     &= \big(
         \underbrace{\grad ( \div \vec{A} )}_{= 0}
         - \vlaplacian \vec{A}
-      \big) = -\vlaplacian \vec{A}. \\
+      \big) = -\vlaplacian \vec{A}.
 \end{align*}
 We know that in \(\uvec{A} = \uvec{J} = \uvec{z}\), so in cylindrical
 coordinates the vector Laplacian simplifies down to a single dimension
 \begin{equation} \label{eqn:classic-az-ode}
   \mu J(r) = - \frac{1}{r} \partial_r ( r \partial_r A_z ),
 \end{equation}
-an ODE in \(r\).
-
-The boundary conditions for this problem are: that at the border between the conductor the
-\(A_z\) is continuous, and the derivative \(\partial_r A_z\) is also continuous
-(because \(\vec{B} = \curl \vec{A}\) is continuous), lastly when \(r = 0\) we
-want \(A_z\) to not be infinite, so we set it to zero.  Algebraically, if 1 is
-inside the conductor and 2 outside:
+an ODE in \(r\).  The boundary conditions for this problem are: that at the
+border between the conductor the \(A_z\) is continuous, and the derivative
+\(\partial_r A_z\) is also continuous (because \(\vec{B} = \curl \vec{A}\) is
+continuous), lastly when \(r = 0\) we want \(A_z\) to not be infinite, so we set
+it to zero.  Algebraically, if 1 is inside the conductor and 2 outside:
 \begin{subequations}
   \begin{align}
     A_{z1} (0) &= 0 , \label{eqn:classic-az-finite} \\
@@ -521,80 +711,72 @@ To get the flux density we use \(\vec{B} = \curl \vec{A}\):
   \end{cases}
 \]
 
-\paragraph{Infinite plane}
+% \paragraph{Infinite plane}
 
-\section{Boundary value problems}
+\paragraph{Planar electromagnetic wave}
 
-\subsection{Steady-state flow analysis}
-The equation for the steady-state analysis is
+\newcommand{\vwave}[1]{\vec{\tilde{#1}}}
+
+\begin{quote}
+  An electromagnetic wave \(\vwave{E} = \tilde{E}(x) \uvec{y}\) in air
+  (\(\sigma = 0, \varepsilon_r = 1\)) hits a dielectric wall (\(\sigma \approx
+  0, \varepsilon_r > 1\)) on the \(zy\) plane at \(x = 0\). Compute the
+  reflected and transmitted waves \(\vwave{E}_r\), \(\vwave{H}_r\)
+  \(\vwave{E}_t\) and \(\vwave{H}_t\).
+\end{quote}
+
+This problem is solved using the wave equation \eqref{eqn:wave-equation-e} in the
+frequency domain:
+\[
+  \vlaplacian \vwave{E} + \omega^2 \mu \varepsilon \vwave{E} = 0.
+\]
+Because \(\vwave{E} = \tilde{E}(x) \uvec{y}\) the problem is reduced to an ODE:
 \begin{equation}
-  \laplacian \varphi = 0 \quad\text{for}\quad \vec{r} \in \Omega,
+  \frac{d^2 \tilde{E}}{dx^2} + \omega^2 \mu \varepsilon \tilde{E} = 0.
 \end{equation}
-with its boundary conditions:
-\(
-  \varphi = 0 \text{ for } \vec{r}\in\Gamma_e,
-  \varphi = U \text{ for } \vec{r}\in\Gamma_b,
-  \nabla_\uvec{n} \varphi = 0 \text{ for } \vec{r}\in\Gamma_s.
-\)
-
-\subsection{Magnetostatic analysis}
-The equation for the magnetostatic analysis is
-\begin{equation}
-  \vlaplacian \vec{A} = -\mu_0 \vec{J} \quad\text{for}\quad \vec{r} \in \Omega.
-\end{equation}
-
-\subsection{Magnetoquasistatic analysis}
-The equation for the magnetoquasistatic analysis is
-\begin{equation}
-  \vlaplacian \vec{A} - \mu_0 \sigma \partial_t \vec{A}
-    = -\mu_0 \vec{J}_q \quad\text{for}\quad \vec{r} \in \Omega,
-\end{equation}
-with its boundary conditions \(\uvec{n}\crossp\vec{A} = \vec{0}\) for \(\vec{r}\in\Gamma_i\).
-
-\subsection{Electrodynamic analysis}
-The equationsfor the electrodynamic analysis are
+With the ansatz \(\tilde{E} = Ce^{\lambda x}\), we get the characteristic
+polynomial and its solutions:
+\[
+  (\lambda^2 + \omega^2\mu\varepsilon) = 0
+    \implies \lambda_{1,2} = \pm j\omega\sqrt{\mu\varepsilon}.
+\]
+Thus the general solution is
+\[
+  \tilde{E} = C_t e^{-j\omega x\sqrt{\mu\varepsilon}}
+    + C_r e^{j\omega x\sqrt{\mu\varepsilon}}
+    = \tilde{E}_t + \tilde{E}_r.
+\]
+By inspecting this result we see that there are two waves: one traveling in the
+positive \(x\) direction (i.e. \(\exp(-j\omega x\sqrt{\mu\varepsilon})\)), and
+the other traveling in the negative \(x\) direction (\(\exp(+j\omega
+x\sqrt{\mu\varepsilon})\)). Further analyzing the exponent, we see that
+dimensionally we have distance over time times the units of
+\(\sqrt{\mu\varepsilon}\). Because the exponent hast to be dimensionless, we can
+infer that the rest must be the reciprocal of a velocity:
+\[
+  \omega x \sqrt{\mu\varepsilon} = \frac{\omega x}{v}, 
+  \text{ where } v = \frac{1}{\sqrt{\mu\varepsilon}}
+  = \frac{c_0}{\sqrt{\mu_r\varepsilon_r}}.
+\]
+Thus in the two materials (air and dielectric) we have the equations:
 \begin{subequations}
-  \begin{gather}
-    \vlaplacian \vec{E}
-      - \mu \sigma \partial_t \vec{E}
-      - \mu \epsilon \partial^2_t \vec{E} = \vec{0}, \\
-    \vlaplacian \vec{H}
-      - \mu \sigma \partial_t \vec{H}
-      - \mu \epsilon \partial^2_t \vec{H} = \vec{0}.
-  \end{gather}
+  \begin{align}
+    \tilde{E}_1 &= C_{t1} e^{-j\omega x / c_0} + C_{r1} e^{j\omega x / c_0}, \\
+    \tilde{E}_2 &= C_{t2} e^{-j\omega x \sqrt{\varepsilon_r} / c_0}.
+  \end{align}
 \end{subequations}
-
-\section{Laplace and Poisson's equations} \label{sec:poisson}
-
-The so called \emph{Poisson's equation} has the form
+Since in the dielectric we cannot possibly have a wave in the negative \(x\)
+direction, we can assume that \(C_{r2} = 0\).  The boundary conditions are given
+by the physical conditions \(\uvec{x} \crossp \vwave{E}_1 = \uvec{x} \crossp
+\vwave{E}_2\) and \(\uvec{x} \crossp \vwave{H}_1 = \uvec{x} \crossp
+\vwave{H}_2\), thus since
 \[
-  \laplacian \varphi = - \frac{\rho}{\epsilon}.
+  \vwave{H} = \frac{-1}{j\omega \mu_0} \curl \vwave{E}
+  = \frac{- \uvec{z}}{j\omega \mu_0} \frac{d\tilde{E}}{dx}
 \]
-When the right side of the equation is zero, it is also known as \emph{Laplace's
-equation}.
-
-\subsection{Easy solutions of Laplace and Poisson's equations}
-
-\paragraph{Geometry with zenithal and azimuthal symmetries (\"Ubung 2)}
-
-Suppose we have a geometry where, using spherical coordinates, there is a
-symmetry such that the solution does not depend on \(\phi\) or \(\theta\).
-Then Laplace's equation reduces down to
-\[
-  \laplacian \varphi = \frac{1}{r^2} \partial_r ( r^2 \partial_r \varphi) = 0,
-\]
-which has solutions of the form
-\[
-  \varphi(r) = \frac{C_1}{r} + C_2.
-\]
-
-\paragraph{Geometry with azimuthal and translational symmetry (\"Ubung 3)}
-
-Suppose that when using cylindrical coordinates, the solution does not depend
-on \(\phi\) or \(z\). Then Laplace's equation becomes
-\[
-  \laplacian A_z = \frac{1}{r} \partial_r (r \partial_r A_z) = 0.
-\]
+we get the boundary conditions
+\begin{subequations}
+\end{subequations}
 
 \section{Finite element method}
 
@@ -620,7 +802,8 @@ Because \(\rho = \div \vec{D}\), we can rewrite it as
   W_e &= \int_\Omega (\div \vec{D}) \, \varphi \, ds
        = \int_\Omega \div (\vec{D} \varphi) - \vec{D} \dotp (\grad \varphi) \, ds \\
       &= \underbrace{\oint_{\partial \Omega} \vec{D} \varphi \dotp d\vec{s}}_{
-      \text{electrostatics } \therefore \, = 0}
+        \varphi(\vec{r} \in \partial \Omega) = 0
+      }
          + \int_\Omega \vec{D} \dotp (-\grad \varphi) \, ds \\
       &= \int_\Omega \vec{D} \dotp \vec{E} \, ds
        = \int_\Omega \varepsilon E^2 \, ds
